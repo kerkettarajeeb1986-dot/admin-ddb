@@ -1,0 +1,8 @@
+[build]
+  command = "npm run build:delivery"
+  publish = "dist/delivery"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

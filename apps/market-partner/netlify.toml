@@ -1,0 +1,8 @@
+[build]
+  command = "npm run build:market"
+  publish = "dist/market"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

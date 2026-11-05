@@ -1,0 +1,84 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isSuperAdmin() {
+      return true;
+    }
+
+    // Health/Connectivity Check
+    match /test/{testId} {
+      allow read, write: if true;
+    }
+
+    // Local Area Management (Full Read & Write)
+    match /localAreas/{areaId} {
+      allow read, write: if true;
+    }
+
+    // User profiles (Customers, Market Partners, Delivery Partners, Super Admin)
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    // Master Settings (Full Read & Write)
+    match /settings/{settingId} {
+      allow read, write: if true;
+    }
+
+    // Product Categories (Full Read & Write)
+    match /categories/{categoryId} {
+      allow read, write: if true;
+    }
+
+    // System Settings & Business Settings (Full Read & Write)
+    match /systemSettings/{settingId} {
+      allow read, write: if true;
+    }
+
+    // Admin Audit Logs (Full Read & Write)
+    match /admin_audit_logs/{logId} {
+      allow read, write: if true;
+    }
+
+    // Shipping & Delivery Rates Configuration (Full Read & Write)
+    match /shippingOptions/{optionId} {
+      allow read, write: if true;
+    }
+
+    // Store Catalog & Products (Full Read & Write)
+    match /products/{productId} {
+      allow read, write: if true;
+    }
+
+    // Grocery Orders (Full Read & Write)
+    match /orders/{orderId} {
+      allow read, write: if true;
+    }
+
+    // Realtime Delivery Partner GPS Location
+    match /delivery_locations/{riderId} {
+      allow read, write: if true;
+    }
+
+    // Partner Online/Offline Presence & Heartbeats
+    match /partner_presence/{partnerId} {
+      allow read, write: if true;
+    }
+
+    // Disputes & Complaints Management
+    match /disputes/{disputeId} {
+      allow read, write: if true;
+    }
+
+    // Live Admin Notifications
+    match /admin_notifications/{notificationId} {
+      allow read, write: if true;
+    }
+  }
+}

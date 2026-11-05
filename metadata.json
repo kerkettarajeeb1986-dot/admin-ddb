@@ -1,0 +1,6 @@
+{
+  "name": "Super Admin Panel - Dooars Daily Basket",
+  "description": "Dooars Daily Basket Super Admin Panel with Local Area Management, market partner registration, grocery logistics, and regional serviceability.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

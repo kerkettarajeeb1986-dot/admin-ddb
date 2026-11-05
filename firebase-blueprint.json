@@ -1,0 +1,204 @@
+{
+  "entities": {
+    "LocalArea": {
+      "title": "LocalArea",
+      "description": "Geographical operational territory for delivery serviceability and partner registration.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "pinCodes": { "type": "array" },
+        "district": { "type": "string" },
+        "state": { "type": "string" },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "radiusKm": { "type": "number" },
+        "deliveryAvailable": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["active", "disabled", "archived"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "createdBy": { "type": "string" }
+      },
+      "required": ["name", "pinCodes", "district", "state", "latitude", "longitude", "radiusKm", "deliveryAvailable", "status"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account for Super Admin, Market Partner, Delivery Rider, or Customer.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["super_admin", "market_partner", "delivery_partner", "customer"] },
+        "localAreaId": { "type": "string" },
+        "localAreaName": { "type": "string" },
+        "storeName": { "type": "string" },
+        "phone": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "MasterSettings": {
+      "title": "MasterSettings",
+      "description": "Platform global fee splits, contact details, and UPI receiver.",
+      "type": "object",
+      "properties": {
+        "appName": { "type": "string" },
+        "platformFeePercent": { "type": "number" },
+        "marketPartnerCommissionPercent": { "type": "number" },
+        "deliveryPartnerSharePercent": { "type": "number" },
+        "deliveryBaseFee": { "type": "number" },
+        "deliveryPerKmFee": { "type": "number" },
+        "upiId": { "type": "string" },
+        "supportPhone": { "type": "string" },
+        "supportEmail": { "type": "string" }
+      }
+    },
+    "GroceryOrder": {
+      "title": "GroceryOrder",
+      "description": "Grocery delivery order containing line items, status, and assignment.",
+      "type": "object",
+      "properties": {
+        "orderNumber": { "type": "string" },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "marketPartnerId": { "type": "string" },
+        "marketPartnerName": { "type": "string" },
+        "deliveryPartnerId": { "type": "string" },
+        "deliveryPartnerName": { "type": "string" },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string" },
+        "localAreaId": { "type": "string" }
+      },
+      "required": ["customerId", "totalAmount", "status"]
+    },
+    "Dispute": {
+      "title": "Dispute",
+      "description": "Disputes and complaints raised by customers, partners, or riders.",
+      "type": "object",
+      "properties": {
+        "disputeNumber": { "type": "string" },
+        "raisedByType": { "type": "string" },
+        "raisedById": { "type": "string" },
+        "subject": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["raisedByType", "raisedById", "subject", "status"]
+    },
+    "AdminNotification": {
+      "title": "AdminNotification",
+      "description": "Real-time alerts for the Super Admin.",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "read": { "type": "boolean" }
+      },
+      "required": ["type", "title", "message"]
+    },
+    "BusinessSettings": {
+      "title": "BusinessSettings",
+      "description": "Central business configuration including contacts, address, policies, hours, and branding.",
+      "type": "object",
+      "properties": {
+        "businessName": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "isLogoEnabled": { "type": "boolean" },
+        "officeAddress": { "type": "string" },
+        "supportWhatsApp": { "type": "string" },
+        "isWhatsAppEnabled": { "type": "boolean" },
+        "supportEmail": { "type": "string" },
+        "isEmailEnabled": { "type": "boolean" },
+        "website": { "type": "string" },
+        "isWebsiteEnabled": { "type": "boolean" },
+        "customerSupportInfo": { "type": "string" },
+        "businessDescription": { "type": "string" },
+        "aboutUs": { "type": "string" },
+        "termsAndConditions": { "type": "string" },
+        "privacyPolicy": { "type": "string" },
+        "refundPolicy": { "type": "string" },
+        "businessHours": { "type": "string" },
+        "isBusinessHoursEnabled": { "type": "boolean" },
+        "serviceAreaInfo": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "updatedBy": { "type": "string" }
+      },
+      "required": ["businessName", "officeAddress", "supportWhatsApp", "supportEmail"]
+    },
+    "AdminAuditLog": {
+      "title": "AdminAuditLog",
+      "description": "Audit trails for business settings and administrative updates.",
+      "type": "object",
+      "properties": {
+        "action": { "type": "string" },
+        "category": { "type": "string" },
+        "changedFields": { "type": "array" },
+        "updatedBy": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "summary": { "type": "string" }
+      },
+      "required": ["action", "updatedBy"]
+    },
+    "ProductCategory": {
+      "title": "ProductCategory",
+      "description": "Store product categories configured by super admin for inventory organization.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "hindiName": { "type": "string" },
+        "description": { "type": "string" },
+        "icon": { "type": "string" },
+        "isEnabled": { "type": "boolean" },
+        "order": { "type": "number" },
+        "aliases": { "type": "array" }
+      },
+      "required": ["id", "name", "isEnabled", "order"]
+    }
+  },
+  "firestore": {
+    "/localAreas/{areaId}": {
+      "schema": "LocalArea",
+      "description": "Admin-managed operational local areas"
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles with assigned roles and operational zones"
+    },
+    "/settings/master": {
+      "schema": "MasterSettings",
+      "description": "Global platform configurations and fee splits"
+    },
+    "/settings/business": {
+      "schema": "BusinessSettings",
+      "description": "Central system and business configurations accessible to all apps"
+    },
+    "/settings/categories": {
+      "schema": "ProductCategory",
+      "description": "Platform authoritative category registry and enablement states"
+    },
+    "/categories/{categoryId}": {
+      "schema": "ProductCategory",
+      "description": "Individual product category document"
+    },
+    "/admin_audit_logs/{logId}": {
+      "schema": "AdminAuditLog",
+      "description": "Audit log records for administrative changes"
+    },
+    "/orders/{orderId}": {
+      "schema": "GroceryOrder",
+      "description": "Real-time customer orders and delivery assignments"
+    },
+    "/disputes/{disputeId}": {
+      "schema": "Dispute",
+      "description": "Customer, Partner and Rider complaints"
+    },
+    "/admin_notifications/{notificationId}": {
+      "schema": "AdminNotification",
+      "description": "Live administrative event notifications"
+    }
+  }
+}
