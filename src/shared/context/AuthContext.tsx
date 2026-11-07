@@ -76,7 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } else {
           // Check if current URL path is a protected admin path
           const pathname = window.location.pathname;
-          if (pathname.startsWith('/admin')) {
+          if (pathname.includes('/admin')) {
             // Non-authorized user attempting admin access: deny and sign out
             await fbSignOut(auth);
             setUser(null);

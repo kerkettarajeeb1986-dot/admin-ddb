@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Headphones, Phone, Mail, Globe, MapPin, Clock, MessageSquare, FileText } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { BusinessPolicyModal } from './BusinessPolicyModal';
+import { getAssetUrl } from '../../utils/assetHelper';
 
 export const SupportModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
   const { businessSettings, masterSettings } = useStore();
@@ -28,7 +29,7 @@ export const SupportModal: React.FC<{ isOpen: boolean; onClose: () => void }> = 
           <div className="flex items-center gap-3 mb-4">
             {businessSettings.isLogoEnabled && businessSettings.logoUrl ? (
               <img
-                src={businessSettings.logoUrl}
+                src={getAssetUrl(businessSettings.logoUrl)}
                 alt={businessSettings.businessName}
                 className="w-12 h-12 object-contain rounded-full border border-emerald-300 p-0.5 bg-white shadow-xs"
               />

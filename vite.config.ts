@@ -4,7 +4,10 @@ import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
+  // Use './' relative base so assets load cleanly on ANY platform:
+  // GitHub Pages, InfinityFree, subfolders, custom domains, or root hosting
   return {
+    base: './',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {

@@ -25,6 +25,7 @@ import { GroceryShippingCheckout } from './GroceryShippingCheckout';
 import { BusinessPolicyModal, PolicyType } from '../common/BusinessPolicyModal';
 import { productService } from '../../services/productService';
 import { GroceryProduct, isProductInCategory, normalizeCategoryName } from '../../types';
+import { getAssetUrl } from '../../utils/assetHelper';
 
 export const CustomerApp: React.FC = () => {
   const {
@@ -111,7 +112,7 @@ export const CustomerApp: React.FC = () => {
         <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 bg-emerald-50 rounded-full p-1 border border-emerald-200 shadow-xs flex items-center justify-center overflow-hidden">
           {businessSettings.isLogoEnabled && businessSettings.logoUrl ? (
             <img
-              src={businessSettings.logoUrl}
+              src={getAssetUrl(businessSettings.logoUrl)}
               alt={businessSettings.businessName}
               className="w-full h-full object-contain rounded-full"
               referrerPolicy="no-referrer"
@@ -432,7 +433,7 @@ export const CustomerApp: React.FC = () => {
             <div className="flex items-center gap-2.5">
               {businessSettings.isLogoEnabled && businessSettings.logoUrl ? (
                 <img
-                  src={businessSettings.logoUrl}
+                  src={getAssetUrl(businessSettings.logoUrl)}
                   alt={businessSettings.businessName}
                   className="w-8 h-8 object-contain rounded-full border border-emerald-300 p-0.5 bg-white"
                 />

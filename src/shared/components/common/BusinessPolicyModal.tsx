@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, FileText, Shield, RotateCcw, Info, Headphones, MapPin, Phone, Mail, Globe, Clock } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
+import { getAssetUrl } from '../../utils/assetHelper';
 
 export type PolicyType = 'terms' | 'privacy' | 'refund' | 'about' | 'support';
 
@@ -28,7 +29,7 @@ export const BusinessPolicyModal: React.FC<BusinessPolicyModalProps> = ({
           <div className="flex items-center gap-3">
             {businessSettings.isLogoEnabled && businessSettings.logoUrl ? (
               <img
-                src={businessSettings.logoUrl}
+                src={getAssetUrl(businessSettings.logoUrl)}
                 alt={businessSettings.businessName}
                 className="w-9 h-9 object-contain rounded-full bg-white p-0.5 border border-emerald-400"
               />

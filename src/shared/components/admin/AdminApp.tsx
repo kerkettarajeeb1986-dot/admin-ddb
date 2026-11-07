@@ -45,6 +45,7 @@ import { AdminUpiQrManager } from './AdminUpiQrManager';
 import { CommissionPayoutSettings } from './CommissionPayoutSettings';
 import { MasterSettingsManager } from './MasterSettingsManager';
 import { AdminBusinessSettingsManager } from './AdminBusinessSettingsManager';
+import { getAssetUrl } from '../../utils/assetHelper';
 
 import { userService } from '../../services/userService';
 import { orderService } from '../../services/orderService';
@@ -73,21 +74,20 @@ export type AdminTab =
   | 'settings';
 
 export const pathToAdminTab = (pathname: string): AdminTab => {
-  if (pathname === '/admin' || pathname === '/admin/dashboard') return 'overview';
-  if (pathname.startsWith('/admin/products') || pathname.startsWith('/admin/catalog') || pathname.startsWith('/admin/items') || pathname.startsWith('/admin/categories')) return 'products';
-  if (pathname.startsWith('/admin/customers')) return 'customers';
-  if (pathname.startsWith('/admin/market-partners')) return 'market_partners';
-  if (pathname.startsWith('/admin/delivery-partners')) return 'delivery_partners';
-  if (pathname.startsWith('/admin/orders')) return 'orders';
-  if (pathname.startsWith('/admin/upi') || pathname.startsWith('/admin/qr')) return 'upi_qr';
-  if (pathname.startsWith('/admin/local-areas')) return 'local_areas';
-  if (pathname.startsWith('/admin/disputes')) return 'disputes';
-  if (pathname.startsWith('/admin/shipping')) return 'shipping';
-  if (pathname.startsWith('/admin/commissions')) return 'commissions';
-  if (pathname.startsWith('/admin/payments')) return 'market_payouts';
-  if (pathname.startsWith('/admin/reports')) return 'revenue';
-  if (pathname.startsWith('/admin/business')) return 'business_settings';
-  if (pathname.startsWith('/admin/settings')) return 'settings';
+  if (pathname.includes('/admin/products') || pathname.includes('/admin/catalog') || pathname.includes('/admin/items') || pathname.includes('/admin/categories')) return 'products';
+  if (pathname.includes('/admin/customers')) return 'customers';
+  if (pathname.includes('/admin/market-partners')) return 'market_partners';
+  if (pathname.includes('/admin/delivery-partners')) return 'delivery_partners';
+  if (pathname.includes('/admin/orders')) return 'orders';
+  if (pathname.includes('/admin/upi') || pathname.includes('/admin/qr')) return 'upi_qr';
+  if (pathname.includes('/admin/local-areas')) return 'local_areas';
+  if (pathname.includes('/admin/disputes')) return 'disputes';
+  if (pathname.includes('/admin/shipping')) return 'shipping';
+  if (pathname.includes('/admin/commissions')) return 'commissions';
+  if (pathname.includes('/admin/payments')) return 'market_payouts';
+  if (pathname.includes('/admin/reports')) return 'revenue';
+  if (pathname.includes('/admin/business')) return 'business_settings';
+  if (pathname.includes('/admin/settings')) return 'settings';
   return 'overview';
 };
 
@@ -121,8 +121,13 @@ export const AdminApp: React.FC = () => {
   const handleTabChange = (tab: AdminTab) => {
     setActiveTab(tab);
     const targetPath = adminTabToPath[tab] || '/admin/dashboard';
-    if (window.location.pathname !== targetPath) {
-      window.history.pushState(null, '', targetPath);
+    const segments = window.location.pathname.split('/').filter(Boolean);
+    const prefix = segments.length > 0 && !['admin', 'market', 'delivery', 'login'].includes(segments[0].toLowerCase())
+      ? '/' + segments[0]
+      : '';
+    const fullTarget = prefix ? `${prefix}${targetPath}` : targetPath;
+    if (window.location.pathname !== fullTarget) {
+      window.history.pushState(null, '', fullTarget);
     }
   };
 
@@ -329,7 +334,7 @@ export const AdminApp: React.FC = () => {
         <header className="lg:hidden bg-emerald-950 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-md">
           <div className="flex items-center gap-2.5">
             <img
-              src="/logo.png"
+              src={getAssetUrl('/logo.png')}
               alt="Dooars Daily Basket"
               className="w-8 h-8 object-contain rounded-full border border-emerald-400 bg-white"
               referrerPolicy="no-referrer"
@@ -381,7 +386,7 @@ export const AdminApp: React.FC = () => {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-white p-0.5 shadow-md border-2 border-emerald-500 shrink-0">
                 <img
-                  src="/logo.png"
+                  src={getAssetUrl('/logo.png')}
                   alt="Dooars Daily Basket"
                   className="w-full h-full object-contain rounded-full"
                   referrerPolicy="no-referrer"

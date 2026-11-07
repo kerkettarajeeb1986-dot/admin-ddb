@@ -13,34 +13,80 @@ import { ProfileView } from './shared/components/common/ProfileView';
 import { ErrorBoundary } from './shared/components/common/ErrorBoundary';
 import { ShieldCheck, Store, Bike } from 'lucide-react';
 
+function extractAppPath(rawPath?: string): string {
+  // 1. Support hash-based routing (#/admin, #admin, #/market, etc.)
+  if (typeof window !== 'undefined' && window.location.hash) {
+    const cleanHash = window.location.hash.replace(/^#\/?/, '/');
+    const hashMatch = cleanHash.match(/(\/(admin|market|delivery|login)(\/.*)?)$/i);
+    if (hashMatch) {
+      return hashMatch[1];
+    }
+  }
+
+  // 2. Support pathname routing (/admin, /dooarsdailybasketadmin/admin, etc.)
+  const p = rawPath || (typeof window !== 'undefined' ? window.location.pathname : '/');
+  const match = p.match(/(\/(admin|market|delivery|login)(\/.*)?)$/i);
+  if (match) {
+    return match[1];
+  }
+  return '/';
+}
+
+function getRepoBasePrefix(): string {
+  const p = typeof window !== 'undefined' ? window.location.pathname || '/' : '/';
+  const match = p.match(/^(.*?)(\/(admin|market|delivery|login)(\/.*)?|\/?)$/i);
+  if (match && match[1] && match[1] !== '/') {
+    return match[1].replace(/\/$/, '');
+  }
+  return '';
+}
+
 const AppContent: React.FC = () => {
   const { user, role, userProfile, isSuperAdmin, authLoading } = useAuth();
-  const [currentPath, setCurrentPath] = useState<string>(() => window.location.pathname || '/');
+  const [currentPath, setCurrentPath] = useState<string>(() => extractAppPath());
   const [showProfile, setShowProfile] = useState(false);
   const [showPartnerRegister, setShowPartnerRegister] = useState(false);
 
-  // Sync with browser navigation
+  // Sync with browser navigation (both history popstate & hash changes)
   useEffect(() => {
-    const onPopState = () => {
-      setCurrentPath(window.location.pathname || '/');
+    const onLocationChange = () => {
+      setCurrentPath(extractAppPath());
     };
-    window.addEventListener('popstate', onPopState);
-    return () => window.removeEventListener('popstate', onPopState);
+    window.addEventListener('popstate', onLocationChange);
+    window.addEventListener('hashchange', onLocationChange);
+    return () => {
+      window.removeEventListener('popstate', onLocationChange);
+      window.removeEventListener('hashchange', onLocationChange);
+    };
   }, []);
 
   const navigate = (to: string, replace = false) => {
-    if (replace) {
-      window.history.replaceState(null, '', to);
+    const cleanTo = to.startsWith('/') ? to : '/' + to;
+    const prefix = getRepoBasePrefix();
+    
+    // If the browser currently has a hash (or server does not support rewrites), preserve hash navigation
+    if (window.location.hash) {
+      if (replace) {
+        window.history.replaceState(null, '', `#${cleanTo}`);
+      } else {
+        window.location.hash = cleanTo;
+      }
     } else {
-      window.history.pushState(null, '', to);
+      const fullTarget = prefix ? `${prefix}${cleanTo}` : cleanTo;
+      if (replace) {
+        window.history.replaceState(null, '', fullTarget);
+      } else {
+        window.history.pushState(null, '', fullTarget);
+      }
     }
-    setCurrentPath(to);
+    setCurrentPath(cleanTo);
   };
 
-  const isAdminRoute = currentPath.startsWith('/admin');
-  const isLoginRoute = currentPath === '/login';
-  const isMarketRoute = currentPath.startsWith('/market');
-  const isDeliveryRoute = currentPath.startsWith('/delivery');
+  const normalized = extractAppPath(currentPath);
+  const isAdminRoute = normalized.startsWith('/admin');
+  const isLoginRoute = normalized === '/login';
+  const isMarketRoute = normalized.startsWith('/market');
+  const isDeliveryRoute = normalized.startsWith('/delivery');
 
   // Redirect to admin dashboard if already logged in as super admin on /login
   useEffect(() => {

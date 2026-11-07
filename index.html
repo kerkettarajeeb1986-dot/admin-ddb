@@ -4,17 +4,69 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Super Admin Panel - Dooars Daily Basket</title>
-    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="icon" type="image/png" href="%BASE_URL%logo.png" />
     <meta name="description" content="Dooars Daily Basket Super Admin Panel with Local Area Management, market partner registration, grocery logistics, and regional serviceability." />
     <meta property="og:title" content="Super Admin Panel - Dooars Daily Basket" />
     <meta property="og:description" content="Dooars Daily Basket Super Admin Panel with Local Area Management, market partner registration, grocery logistics, and regional serviceability." />
-    <meta property="og:image" content="/logo.png" />
+    <meta property="og:image" content="%BASE_URL%logo.png" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Universal Trailing Slash Fix for all hosting platforms (prevents relative asset 404s) -->
+    <script type="text/javascript">
+      (function() {
+        var p = window.location.pathname;
+        if (p.length > 1 && !p.endsWith('/') && !p.split('/').pop().includes('.')) {
+          window.location.replace(window.location.origin + p + '/' + window.location.search + window.location.hash);
+        }
+      })();
+    </script>
+
+    <!-- SPA Query Redirect Restorer for GitHub Pages -->
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&'); 
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <!-- Startup Error Catcher to eliminate silent blank screens -->
+    <script type="text/javascript">
+      window.addEventListener('error', function(e) {
+        var loader = document.getElementById('app-bootstrap-loader');
+        if (loader && !document.getElementById('startup-error-box')) {
+          var box = document.createElement('div');
+          box.id = 'startup-error-box';
+          box.style.cssText = 'margin-top: 20px; padding: 14px 18px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 10px; color: #fca5a5; font-size: 13px; max-width: 440px; text-align: left; line-height: 1.5;';
+          box.innerHTML = '<strong style="color:#ef4444;display:block;margin-bottom:4px;">App Initialization Notice:</strong>' + (e.message || 'Script failed to load') + '<br><button onclick="window.location.reload()" style="margin-top:10px;padding:6px 14px;background:#10b981;color:white;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:12px;">Reload Application</button>';
+          loader.appendChild(box);
+        }
+      });
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Branded Initial Loader: Guarantees user NEVER sees an empty white screen -->
+      <div id="app-bootstrap-loader" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0f172a; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: white; padding: 24px; text-align: center;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; border: 3px solid rgba(16, 185, 129, 0.2); border-top-color: #10b981; animation: spin-loader 0.8s linear infinite; margin-bottom: 20px;"></div>
+        <h1 style="font-size: 20px; font-weight: 800; letter-spacing: 0.5px; margin: 0 0 6px 0; color: #ffffff;">DOOARS DAILY BASKET</h1>
+        <p style="font-size: 13px; color: #94a3b8; margin: 0;">Loading application services...</p>
+        <noscript>
+          <div style="margin-top: 16px; padding: 12px 18px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; color: #fca5a5; font-size: 13px;">
+            Please enable JavaScript in your browser to view this application.
+          </div>
+        </noscript>
+      </div>
+      <style>
+        @keyframes spin-loader { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+      </style>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

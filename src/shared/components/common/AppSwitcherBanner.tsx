@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShoppingBag, Store, Bike, ShieldCheck, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { getAssetUrl } from '../../utils/assetHelper';
 
 export interface AppSwitcherBannerProps {
   currentApp?: 'customer' | 'market' | 'delivery' | 'admin';
@@ -19,7 +20,7 @@ export const AppSwitcherBanner: React.FC<AppSwitcherBannerProps> = ({
     <div className="bg-emerald-950 text-white px-3 sm:px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-2 border-b border-emerald-800/80 sticky top-0 z-40">
       <div className="flex items-center gap-2">
         <img
-          src="/logo.png"
+          src={getAssetUrl('/logo.png')}
           alt="Dooars Daily Basket"
           className="w-5 h-5 rounded-full object-contain bg-white"
           referrerPolicy="no-referrer"

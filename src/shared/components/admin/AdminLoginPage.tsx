@@ -14,6 +14,7 @@ import {
   Send,
 } from 'lucide-react';
 import { useAuth, AUTHORIZED_SUPER_ADMIN_UID } from '../../context/AuthContext';
+import { getAssetUrl } from '../../utils/assetHelper';
 
 interface AdminLoginPageProps {
   onSuccess?: () => void;
@@ -114,7 +115,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onSuccess, onCan
         <div className="bg-gradient-to-br from-emerald-950 via-emerald-900 to-slate-950 text-white p-6 sm:p-8 text-center relative border-b border-emerald-800">
           <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto bg-white rounded-full p-1 shadow-xl mb-3 flex items-center justify-center border-2 border-emerald-400">
             <img
-              src="/logo.png"
+              src={getAssetUrl('/logo.png')}
               alt="Dooars Daily Basket Logo"
               className="w-full h-full object-contain rounded-full"
               referrerPolicy="no-referrer"

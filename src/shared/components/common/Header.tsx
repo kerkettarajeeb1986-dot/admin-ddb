@@ -3,6 +3,7 @@ import { Shield, Headphones, User, MapPin } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useStore } from '../../context/StoreContext';
 import { SupportModal } from './SupportModal';
+import { getAssetUrl } from '../../utils/assetHelper';
 
 export const Header: React.FC<{
   onOpenProfile?: () => void;
@@ -18,7 +19,7 @@ export const Header: React.FC<{
         <div className="flex items-center gap-3">
           {businessSettings.isLogoEnabled && businessSettings.logoUrl ? (
             <img
-              src={businessSettings.logoUrl}
+              src={getAssetUrl(businessSettings.logoUrl)}
               alt={businessSettings.businessName}
               className="w-10 h-10 object-contain rounded-full border border-emerald-300 shadow-xs bg-white p-0.5"
               referrerPolicy="no-referrer"
